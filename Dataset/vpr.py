@@ -48,7 +48,7 @@ class Database(Dataset):
         else:
             image = transforms.ToTensor()(image)
 
-        return (image, self.database[idx])
+        return image, self.database[idx]
 
 
     # here return the length of database, not queries
@@ -81,14 +81,14 @@ class Query(Dataset):
 
 
     # return transformed image and its filename
-    def get_item_from_query(self, idx:int):
+    def get_item_from_queries(self, idx:int):
         image = Image.open(self.queries[idx]).convert("RGB")
         if self.transform is not None:
             image = self.transform(image)
         else:
             image = transforms.ToTensor()(image)
 
-        return (image, self.queries[idx])
+        return image, self.queries[idx]
 
 
     # here return the length of database, not queries
@@ -98,7 +98,7 @@ class Query(Dataset):
 
     # return (image, name)
     def __getitem__(self, idx):
-        return self.get_item_from_database(idx)
+        return self.get_item_from_queries(idx)
 
 
 # this function is to load a list of queries of images directly from a list of paths
