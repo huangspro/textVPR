@@ -6,7 +6,7 @@ class OllamaAPI:
         has_image:bool = False, 
         is_stream:bool = False, 
         has_memory:bool = False, 
-        memory_length:int = 0,
+        memory_length:int = 10,
         
     ):
         self.model_name = model_name
@@ -51,12 +51,12 @@ class OllamaAPI:
             
         # output the text output directly
         else:
-            for chunk in stream:
+            for chunk in response:
                  print(chunk['message']['content'], end='', flush=True)
     
-    def clear_context():
+    def clear_context(self):
         self.message = []
         
-tem = OllamaAPI('gemma3:4b', has_image = True)
+tem = OllamaAPI('gemma3:4b', has_image = True, is_stream=True, has_memory=True)
 tem.generate_message('describe the scene in the image', image_paths = ['/home/hhy/t.jpg'])
-tem.send(True, './ok.txt', 'w')
+tem.send()
