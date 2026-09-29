@@ -1,8 +1,8 @@
 git pull
 
-echo '```' > README.md
-tree -L 10 -I 'command.sh|README.md|.idea' >> README.md
-echo '```' >> README.md
+echo '```' > Structure.md
+tree -L 10 -I 'command.sh|README.md|.idea|__pycache__|Structure.md' >> Structure.md
+echo '```' >> Structure.md
 
 git add .
 git commit -m "auto commit"

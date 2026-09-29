@@ -22,60 +22,93 @@ import torch
 from torch.utils.data import Dataset
 from pathlib import Path
 from PIL import Image
-from torchvision.transforms import v2
+from torchvision import transforms
 
-class VPRDataset(Dataset):
-    def __init__(self, database_dir:str, query_dir:str, transform = None):
+
+# load database directory
+class Database(Dataset):
+    def __init__(self, database_dir:str, transform = None):
         self.database_dir = database_dir
-        self.query_dir = query_dir
         self.transform = transform
-
         self.database = []
-        self.queries = []
-
         self.load_database()
-        self.load_queries()
+
 
     # load all the paths of images in the database/
     def load_database(self):
         database_folder = Path(self.database_dir)
         self.database = [str(file) for file in database_folder.iterdir() if file.is_file()]
 
-    # load all the paths of images in the queries
-    def load_queries(self):
-        query_folder = Path(self.query_dir)
-        self.queries = [str(file) for file in query_folder.iterdir() if file.is_file()]
 
     # return transformed image and its filename
     def get_item_from_database(self, idx:int):
         image = Image.open(self.database[idx]).convert("RGB")
         if self.transform is not None:
             image = self.transform(image)
+        else:
+            image = transforms.ToTensor()(image)
 
         return (image, self.database[idx])
+
+
+    # here return the length of database, not queries
+    def __len__(self):
+        return len(self.database)
+
+
+    # return (image, name)
+    def __getitem__(self, idx):
+        return self.get_item_from_database(idx)
+
+
+
+
+# load queries directory
+class Query(Dataset):
+    def __init__(self, query_dir:str, transform = None):
+        self.query_dir = query_dir
+        self.transform = transform
+
+        self.queries = []
+
+        self.load_queries()
+
+
+    # load all the paths of images in the queries
+    def load_queries(self):
+        query_folder = Path(self.query_dir)
+        self.queries = [str(file) for file in query_folder.iterdir() if file.is_file()]
+
 
     # return transformed image and its filename
     def get_item_from_query(self, idx:int):
         image = Image.open(self.queries[idx]).convert("RGB")
         if self.transform is not None:
             image = self.transform(image)
+        else:
+            image = transforms.ToTensor()(image)
 
         return (image, self.queries[idx])
+
 
     # here return the length of database, not queries
     def __len__(self):
         return len(self.database)
 
+
     # return (image, name)
     def __getitem__(self, idx):
         return self.get_item_from_database(idx)
 
-transform = v2.Compose([
-        v2.Resize((64, 64)),
-        v2.ToImage(),
-        v2.ToDtype(torch.float32, scale=True),
-])
-tem = VPRDataset("/home/hhy/Downloads/pitts30k/pitts30k/images/train/database", "/home/hhy/Downloads/pitts30k/pitts30k/images/train/queries", transform)
-print(len(tem))
-print(tem.get_item_from_query(0))
-print(tem.get_item_from_query(0)[0].shape)
+
+# this function is to load a list of queries of images directly from a list of paths
+def load_queries_directly(image_paths:list, transform = None) -> list:
+    results = []
+    for i in image_paths:
+        image = Image.open(i).convert("RGB").ToTensor()
+        if transform is not None:
+            image = transform(image)
+        else:
+            image = transforms.ToTensor()(image)
+        results.append(image)
+    return results
