@@ -1,3 +1,5 @@
+import time
+
 import ollama
 
 class OllamaAPI:
@@ -39,6 +41,8 @@ class OllamaAPI:
     # user can choose wether to save the reponse to a file
     # save_mode: 'a'->append, 'w'->overwrite
     def send(self, is_to_file:bool = False, file_path:str = '', save_mode:str = 'w'):
+        start = time.time()
+
         # construct response
         # if the is_to_file is True, we shoule put the output of the model at once, not in stream
         if is_to_file==True:
@@ -48,6 +52,7 @@ class OllamaAPI:
         
         # save to file
         if is_to_file:
+            print("Took ", time.time() - start, " to get output")
             with open(file_path, save_mode) as f:
                 f.write(response['message']['content'])
             

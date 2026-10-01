@@ -105,7 +105,7 @@ If no readable text is visible, write:
 "No clearly readable text is visible in the image."
 
 # Important
-Do not describe people, vehicles, animals, shadows, weather, or other temporary objects unless they are necessary for understanding a permanent feature.
-Do not invent details that cannot be observed.
-Do not guess unreadable text.
-Do not infer the exact geographic location without sufficient visual evidence.
+   - Do not describe people, vehicles, animals, shadows, weather, or other temporary objects unless they are necessary for understanding a permanent feature.
+   - Do not invent details that cannot be observed.
+   - Do not guess unreadable text.
+   - Do not infer the exact geographic location without sufficient visual evidence.

@@ -4,7 +4,8 @@
 │   ├── ollama_api.py
 │   ├── processor.py
 │   └── prompt
-│       └── prompt1.txt
+│       ├── prompt1.md
+│       └── prompt2.md
 ├── Dataset
 │   └── vpr.py
 ├── Experiment
@@ -13,5 +14,5 @@
 └── SearchEngine
     └── abstract_engine.py
 
-7 directories, 6 files
+7 directories, 7 files
 ```
